@@ -1,5 +1,5 @@
 const CACHE_NAME = 'dump-v1';
-const ASSETS = ['/', '/index.html', '/manifest.json'];
+const ASSETS = ['/braindump/', '/braindump/index.html', '/braindump/manifest.json'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
