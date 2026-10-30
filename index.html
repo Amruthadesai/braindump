@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Dump</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #161616;
+      --surface2: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --text2: #888;
+      --accent: #6C5CE7;
+      --task: #FF6B6B;
+      --call: #4ECDC4;
+      --idea: #FFE66D;
+      --text-tag: #A29BFE;
+      --thought: #888;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      padding: 60px 20px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .header .date {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    /* ── Capture Area ── */
+    .capture {
+      padding: 0 16px 12px;
+      position: relative;
+    }
+    .capture-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .capture-input {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 16px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      min-height: 22px;
+      max-height: 120px;
+      line-height: 1.4;
+    }
+    .capture-input::placeholder { color: #555; }
+
+    .capture-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag-btn {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: none;
+      color: var(--text2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .tag-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(108, 92, 231, 0.1);
+    }
+    .tag-btn[data-tag="task"].active { border-color: var(--task); color: var(--task); background: rgba(255,107,107,0.1); }
+    .tag-btn[data-tag="call"].active { border-color: var(--call); color: var(--call); background: rgba(78,205,196,0.1); }
+    .tag-btn[data-tag="idea"].active { border-color: var(--idea); color: var(--idea); background: rgba(255,230,109,0.1); }
+    .tag-btn[data-tag="text"].active { border-color: var(--text-tag); color: var(--text-tag); background: rgba(162,155,254,0.1); }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.1s, opacity 0.15s;
+      opacity: 0.4;
+    }
+    .send-btn.ready { opacity: 1; }
+    .send-btn:active { transform: scale(0.9); }
+
+    /* ── Filter Tabs ── */
+    .filters {
+      display: flex;
+      gap: 4px;
+      padding: 8px 16px 4px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      background: var(--surface);
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+    .filter-count {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-left: 4px;
+    }
+
+    /* ── Items List ── */
+    .list {
+      padding: 8px 16px 100px;
+    }
+    .day-group {
+      margin-bottom: 24px;
+    }
+    .day-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 12px 4px 8px;
+    }
+
+    .item {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+      transition: transform 0.2s, opacity 0.2s;
+      touch-action: pan-y;
+    }
+    .item.removing {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    .item-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .item-dot.thought { background: var(--thought); }
+    .item-dot.task { background: var(--task); }
+    .item-dot.call { background: var(--call); }
+    .item-dot.idea { background: var(--idea); }
+    .item-dot.text { background: var(--text-tag); }
+
+    .item-content { flex: 1; min-width: 0; }
+    .item-text {
+      font-size: 15px;
+      line-height: 1.45;
+      word-wrap: break-word;
+    }
+    .item-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .item-time {
+      font-size: 12px;
+      color: var(--text2);
+    }
+    .item-tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .item-tag.task { color: var(--task); background: rgba(255,107,107,0.12); }
+    .item-tag.call { color: var(--call); background: rgba(78,205,196,0.12); }
+    .item-tag.idea { color: var(--idea); background: rgba(255,230,109,0.12); }
+    .item-tag.text { color: var(--text-tag); background: rgba(162,155,254,0.12); }
+
+    .item-done-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      font-size: 13px;
+      transition: all 0.15s;
+    }
+    .item-done-btn:hover, .item-done-btn:active {
+      border-color: var(--accent);
+    }
+    .item.done .item-text {
+      text-decoration: line-through;
+      color: var(--text2);
+    }
+    .item.done .item-done-btn {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .item-delete {
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      opacity: 0;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+    }
+    .item:hover .item-delete,
+    .item:active .item-delete {
+      opacity: 0.6;
+    }
+
+    /* ── Empty State ── */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text2);
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-text { font-size: 15px; line-height: 1.5; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ── Long press delete on mobile ── */
+    @media (hover: none) {
+      .item-delete { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Dump</h1>
+    <span class="date" id="headerDate"></span>
+  </div>
+
+  <div class="capture">
+    <div class="capture-box">
+      <textarea
+        class="capture-input"
+        id="input"
+        placeholder="What's on your mind?"
+        rows="1"
+        autofocus
+      ></textarea>
+      <div class="capture-bottom">
+        <div class="tags">
+          <button class="tag-btn" data-tag="task">Task</button>
+          <button class="tag-btn" data-tag="call">Call</button>
+          <button class="tag-btn" data-tag="idea">Idea</button>
+          <button class="tag-btn" data-tag="text">Text</button>
+        </div>
+        <button class="send-btn" id="sendBtn" aria-label="Save">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="task">Tasks</button>
+    <button class="filter-btn" data-filter="call">Calls</button>
+    <button class="filter-btn" data-filter="idea">Ideas</button>
+    <button class="filter-btn" data-filter="text">Texts</button>
+    <button class="filter-btn" data-filter="thought">Thoughts</button>
+    <button class="filter-btn" data-filter="done">Done</button>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Data ──
+    const STORAGE_KEY = 'braindump_items';
+
+    function getItems() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch { return []; }
+    }
+
+    function saveItems(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    // ── State ──
+    let activeTag = null;
+    let activeFilter = 'all';
+
+    // ── Elements ──
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('sendBtn');
+    const listEl = document.getElementById('list');
+    const headerDate = document.getElementById('headerDate');
+    const toastEl = document.getElementById('toast');
+
+    // ── Date display ──
+    function updateHeaderDate() {
+      const now = new Date();
+      const opts = { weekday: 'long', month: 'short', day: 'numeric' };
+      headerDate.textContent = now.toLocaleDateString('en-US', opts);
+    }
+    updateHeaderDate();
+
+    // ── Auto-resize textarea ──
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+      sendBtn.classList.toggle('ready', input.value.trim().length > 0);
+    });
+
+    // ── Tag selection ──
+    document.querySelectorAll('.tag-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag;
+        if (activeTag === tag) {
+          activeTag = null;
+          btn.classList.remove('active');
+        } else {
+          document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+          activeTag = tag;
+          btn.classList.add('active');
+        }
+        input.focus();
+      });
+    });
+
+    // ── Filter selection ──
+    document.getElementById('filters').addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      renderList();
+    });
+
+    // ── Save item ──
+    function addItem() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      const item = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        text,
+        tag: activeTag || 'thought',
+        time: new Date().toISOString(),
+        done: false,
+      };
+
+      const items = getItems();
+      items.unshift(item);
+      saveItems(items);
+
+      // Reset
+      input.value = '';
+      input.style.height = 'auto';
+      sendBtn.classList.remove('ready');
+      activeTag = null;
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+
+      renderList();
+      showToast('Captured');
+      input.focus();
+    }
+
+    sendBtn.addEventListener('click', addItem);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        addItem();
+      }
+    });
+
+    // ── Toggle done ──
+    function toggleDone(id) {
+      const items = getItems();
+      const item = items.find(i => i.id === id);
+      if (item) {
+        item.done = !item.done;
+        saveItems(items);
+        renderList();
+      }
+    }
+
+    // ── Delete item ──
+    function deleteItem(id) {
+      const el = document.querySelector(`[data-id="${id}"]`);
+      if (el) {
+        el.classList.add('removing');
+        setTimeout(() => {
+          const items = getItems().filter(i => i.id !== id);
+          saveItems(items);
+          renderList();
+        }, 200);
+      }
+    }
+
+    // ── Render ──
+    function renderList() {
+      const items = getItems();
+      let filtered;
+
+      if (activeFilter === 'all') {
+        filtered = items.filter(i => !i.done);
+      } else if (activeFilter === 'done') {
+        filtered = items.filter(i => i.done);
+      } else {
+        filtered = items.filter(i => i.tag === activeFilter && !i.done);
+      }
+
+      // Update filter counts
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        const f = btn.dataset.filter;
+        let count;
+        if (f === 'all') count = items.filter(i => !i.done).length;
+        else if (f === 'done') count = items.filter(i => i.done).length;
+        else count = items.filter(i => i.tag === f && !i.done).length;
+
+        const existing = btn.querySelector('.filter-count');
+        if (existing) existing.remove();
+        if (count > 0) {
+          const span = document.createElement('span');
+          span.className = 'filter-count';
+          span.textContent = count;
+          btn.appendChild(span);
+        }
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">${activeFilter === 'done' ? '~' : '.'}</div>
+            <div class="empty-text">${
+              activeFilter === 'done'
+                ? 'No completed items yet'
+                : 'Nothing here yet.<br>Dump something above.'
+            }</div>
+          </div>`;
+        return;
+      }
+
+      // Group by day
+      const groups = {};
+      filtered.forEach(item => {
+        const date = new Date(item.time);
+        const key = date.toISOString().split('T')[0];
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(item);
+      });
+
+      let html = '';
+      const today = new Date().toISOString().split('T')[0];
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+      Object.entries(groups).forEach(([date, dayItems]) => {
+        let label;
+        if (date === today) label = 'Today';
+        else if (date === yesterday) label = 'Yesterday';
+        else {
+          const d = new Date(date + 'T12:00:00');
+          label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+
+        html += `<div class="day-group"><div class="day-label">${label}</div>`;
+
+        dayItems.forEach(item => {
+          const time = new Date(item.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+          const tagHtml = item.tag !== 'thought'
+            ? `<span class="item-tag ${item.tag}">${item.tag}</span>`
+            : '';
+
+          html += `
+            <div class="item ${item.done ? 'done' : ''}" data-id="${item.id}">
+              <button class="item-done-btn" onclick="toggleDone('${item.id}')">&#10003;</button>
+              <div class="item-content">
+                <div class="item-text">${escapeHtml(item.text)}</div>
+                <div class="item-meta">
+                  <span class="item-time">${time}</span>
+                  ${tagHtml}
+                </div>
+              </div>
+              <button class="item-delete" onclick="deleteItem('${item.id}')">&times;</button>
+            </div>`;
+        });
+
+        html += '</div>';
+      });
+
+      listEl.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ── Toast ──
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 1500);
+    }
+
+    // ── Init ──
+    renderList();
+
+    // ── Service Worker ──
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
