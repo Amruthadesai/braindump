@@ -5,290 +5,346 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#09090b">
   <title>Dump</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     :root {
-      --bg: #0a0a0a;
-      --surface: #161616;
-      --surface2: #1e1e1e;
-      --surface3: #252525;
-      --border: #2a2a2a;
-      --text: #e8e8e8;
-      --text2: #888;
-      --text3: #555;
-      --accent: #6C5CE7;
-      --accent-dim: rgba(108, 92, 231, 0.15);
-      --task: #FF6B6B;
-      --call: #4ECDC4;
-      --idea: #FFE66D;
-      --text-tag: #A29BFE;
-      --thought: #666;
-      --pin: #FF9F43;
-      --done-bg: rgba(108, 92, 231, 0.08);
-      --danger: #e74c3c;
-      --success: #2ecc71;
-      --radius: 14px;
-      --radius-sm: 10px;
+      --bg: #09090b;
+      --bg2: #0f0f12;
+      --surface: #18181b;
+      --surface2: #1f1f23;
+      --surface3: #27272a;
+      --border: #27272a;
+      --border2: #3f3f46;
+      --text: #fafafa;
+      --text2: #a1a1aa;
+      --text3: #52525b;
+      --accent: #8b5cf6;
+      --accent2: #a78bfa;
+      --accent-glow: rgba(139, 92, 246, 0.15);
+      --accent-glow2: rgba(139, 92, 246, 0.08);
+      --task: #f87171;
+      --task-bg: rgba(248, 113, 113, 0.1);
+      --call: #34d399;
+      --call-bg: rgba(52, 211, 153, 0.1);
+      --idea: #fbbf24;
+      --idea-bg: rgba(251, 191, 36, 0.1);
+      --text-tag: #a78bfa;
+      --text-tag-bg: rgba(167, 139, 250, 0.1);
+      --pin: #fb923c;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --success: #22c55e;
+      --success-bg: rgba(34, 197, 94, 0.15);
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.4), 0 12px 40px rgba(0,0,0,0.3);
     }
 
     [data-theme="light"] {
-      --bg: #f5f5f7;
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
       --surface: #ffffff;
-      --surface2: #f0f0f2;
-      --surface3: #e8e8ea;
-      --border: #ddd;
-      --text: #1a1a1a;
-      --text2: #666;
-      --text3: #999;
-      --thought: #999;
-      --done-bg: rgba(108, 92, 231, 0.06);
+      --surface2: #f8fafc;
+      --surface3: #f1f5f9;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --text: #0f172a;
+      --text2: #64748b;
+      --text3: #94a3b8;
+      --accent-glow: rgba(139, 92, 246, 0.1);
+      --accent-glow2: rgba(139, 92, 246, 0.05);
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100dvh;
-      padding-bottom: env(safe-area-inset-bottom, 20px);
       overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    /* ── App Shell ── */
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 0 16px;
+      padding-bottom: calc(40px + env(safe-area-inset-bottom, 20px));
+    }
+
+    @media (min-width: 768px) {
+      body { background: var(--bg2); }
+      .app {
+        background: var(--bg);
+        min-height: 100dvh;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        padding: 0 24px;
+        padding-bottom: 60px;
+        box-shadow: 0 0 80px rgba(0,0,0,0.15);
+      }
     }
 
     /* ── Header ── */
     .header {
-      padding: 56px 20px 12px;
+      padding: 52px 4px 16px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
     }
     .header-left h1 {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--text2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .header-left .date {
       font-size: 13px;
-      color: var(--text2);
-      margin-top: 2px;
+      color: var(--text3);
+      margin-top: 4px;
+      font-weight: 500;
     }
     .header-actions {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       align-items: center;
+      margin-top: 4px;
     }
     .icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: none;
-      background: var(--surface);
-      color: var(--text2);
-      font-size: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text3);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      transition: all 0.2s ease;
     }
-    .icon-btn:active { transform: scale(0.9); }
-    .icon-btn.active { color: var(--accent); background: var(--accent-dim); }
+    .icon-btn:hover { background: var(--surface); color: var(--text2); }
+    .icon-btn:active { transform: scale(0.92); }
+    .icon-btn.active {
+      color: var(--accent);
+      background: var(--accent-glow);
+      border-color: rgba(139,92,246,0.2);
+    }
 
-    /* ── Stats Bar ── */
+    /* ── Stats ── */
     .stats-bar {
       display: none;
-      padding: 0 16px 8px;
       gap: 8px;
+      padding-bottom: 12px;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      animation: slideDown 0.3s ease;
     }
     .stats-bar::-webkit-scrollbar { display: none; }
     .stats-bar.show { display: flex; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .stat-card {
+      flex: 1;
+      min-width: 0;
       background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 12px 16px;
-      min-width: 100px;
-      flex-shrink: 0;
+      padding: 14px 16px;
+      text-align: center;
     }
     .stat-value {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
+      letter-spacing: -0.5px;
     }
     .stat-label {
-      font-size: 11px;
-      color: var(--text2);
-      margin-top: 2px;
+      font-size: 10px;
+      color: var(--text3);
+      margin-top: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.8px;
+      font-weight: 600;
     }
     .stat-value.streak { color: var(--pin); }
+    .stat-value.open { color: var(--accent2); }
+    .stat-value.done { color: var(--success); }
 
     /* ── Search ── */
     .search-wrap {
-      padding: 0 16px 8px;
+      padding-bottom: 12px;
       display: none;
+      animation: slideDown 0.25s ease;
     }
     .search-wrap.show { display: block; }
     .search-box {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
+      transition: border-color 0.2s;
     }
-    .search-box svg { color: var(--text2); flex-shrink: 0; }
+    .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .search-box svg { color: var(--text3); flex-shrink: 0; }
     .search-input {
       background: none;
       border: none;
       color: var(--text);
-      font-size: 15px;
+      font-size: 14px;
       font-family: inherit;
+      font-weight: 500;
       outline: none;
       width: 100%;
     }
     .search-input::placeholder { color: var(--text3); }
     .search-clear {
-      background: none;
+      background: var(--surface3);
       border: none;
       color: var(--text2);
-      font-size: 18px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 12px;
       cursor: pointer;
       display: none;
-      padding: 0 2px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .search-clear.show { display: block; }
+    .search-clear.show { display: flex; }
 
-    /* ── Capture Area ── */
+    /* ── Capture ── */
     .capture {
-      padding: 0 16px 12px;
+      padding-bottom: 16px;
     }
     .capture-box {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 14px 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.2s;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .capture-box.focused { border-color: var(--accent); }
+    .capture-box.focused {
+      border-color: var(--accent);
+      box-shadow: var(--shadow), 0 0 0 3px var(--accent-glow);
+    }
     .capture-input {
       background: none;
       border: none;
       color: var(--text);
-      font-size: 16px;
+      font-size: 15px;
       font-family: inherit;
+      font-weight: 500;
       resize: none;
       outline: none;
-      min-height: 22px;
+      min-height: 24px;
       max-height: 120px;
-      line-height: 1.4;
+      line-height: 1.5;
     }
-    .capture-input::placeholder { color: var(--text3); }
+    .capture-input::placeholder { color: var(--text3); font-weight: 400; }
 
     .capture-extras {
       display: none;
       gap: 8px;
       align-items: center;
-      flex-wrap: wrap;
+      animation: slideDown 0.2s ease;
     }
     .capture-extras.show { display: flex; }
 
-    .due-btn {
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px dashed var(--border);
-      background: none;
+    .due-btn, .pin-btn {
+      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
+      background: var(--surface2);
       color: var(--text2);
       font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       font-family: inherit;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       transition: all 0.15s;
     }
-    .due-btn.set { border-style: solid; border-color: var(--accent); color: var(--accent); }
-    .due-input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .pin-btn {
-      padding: 5px 10px;
-      border-radius: 8px;
-      border: 1px dashed var(--border);
-      background: none;
-      color: var(--text2);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.15s;
-    }
-    .pin-btn.active { border-style: solid; border-color: var(--pin); color: var(--pin); }
+    .due-btn:active, .pin-btn:active { transform: scale(0.95); }
+    .due-btn.set { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .pin-btn.active { border-color: var(--pin); color: var(--pin); background: rgba(251,146,60,0.1); }
+    .due-input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
 
     .capture-bottom {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .tags { display: flex; gap: 6px; }
     .tag-btn {
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
       border: 1.5px solid var(--border);
       background: none;
-      color: var(--text2);
+      color: var(--text3);
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
       font-family: inherit;
     }
-    .tag-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-    .tag-btn[data-tag="task"].active { border-color: var(--task); color: var(--task); background: rgba(255,107,107,0.1); }
-    .tag-btn[data-tag="call"].active { border-color: var(--call); color: var(--call); background: rgba(78,205,196,0.1); }
-    .tag-btn[data-tag="idea"].active { border-color: var(--idea); color: var(--idea); background: rgba(255,230,109,0.1); }
-    .tag-btn[data-tag="text"].active { border-color: var(--text-tag); color: var(--text-tag); background: rgba(162,155,254,0.1); }
+    .tag-btn:active { transform: scale(0.93); }
+    .tag-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .tag-btn[data-tag="task"].active { border-color: var(--task); color: var(--task); background: var(--task-bg); }
+    .tag-btn[data-tag="call"].active { border-color: var(--call); color: var(--call); background: var(--call-bg); }
+    .tag-btn[data-tag="idea"].active { border-color: var(--idea); color: var(--idea); background: var(--idea-bg); }
+    .tag-btn[data-tag="text"].active { border-color: var(--text-tag); color: var(--text-tag); background: var(--text-tag-bg); }
 
-    .capture-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+    .capture-actions { display: flex; gap: 8px; align-items: center; }
     .mic-btn {
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      border: none;
+      border: 1px solid var(--border);
       background: var(--surface2);
-      color: var(--text2);
-      font-size: 16px;
+      color: var(--text3);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.15s;
     }
-    .mic-btn.recording { background: var(--danger); color: white; animation: pulse 1s infinite; }
+    .mic-btn:active { transform: scale(0.9); }
+    .mic-btn:hover { color: var(--text2); border-color: var(--border2); }
+    .mic-btn.recording {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: white;
+      animation: pulse 1.2s ease infinite;
+      box-shadow: 0 0 16px rgba(239,68,68,0.4);
+    }
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      50% { transform: scale(1.08); }
     }
     .send-btn {
       width: 38px;
@@ -301,132 +357,115 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.1s, opacity 0.15s;
-      opacity: 0.4;
+      transition: all 0.2s;
+      opacity: 0.35;
+      box-shadow: 0 2px 8px rgba(139,92,246,0);
     }
-    .send-btn.ready { opacity: 1; }
-    .send-btn:active { transform: scale(0.9); }
+    .send-btn.ready {
+      opacity: 1;
+      box-shadow: 0 2px 16px rgba(139,92,246,0.4);
+    }
+    .send-btn:active { transform: scale(0.88); }
 
-    /* ── Filter Tabs ── */
+    /* ── Filters ── */
     .filters {
       display: flex;
-      gap: 4px;
-      padding: 4px 16px;
+      gap: 6px;
+      padding-bottom: 12px;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .filters::-webkit-scrollbar { display: none; }
     .filter-btn {
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 20px;
-      border: none;
-      background: var(--surface);
-      color: var(--text2);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text3);
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
       font-family: inherit;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
-    .filter-btn.active { background: var(--text); color: var(--bg); }
+    .filter-btn:active { transform: scale(0.95); }
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      font-weight: 600;
+    }
     .filter-count {
       font-size: 11px;
-      opacity: 0.6;
-      margin-left: 4px;
+      margin-left: 5px;
+      opacity: 0.5;
     }
 
-    /* ── Items List ── */
-    .list {
-      padding: 8px 16px 120px;
-    }
-    .day-group { margin-bottom: 20px; }
+    /* ── Items ── */
+    .list { padding-bottom: 40px; }
+    .day-group { margin-bottom: 8px; }
     .day-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text2);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 12px 4px 8px;
+      letter-spacing: 1px;
+      padding: 16px 4px 10px;
     }
 
-    /* ── Item ── */
     .item-wrap {
       position: relative;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      border-radius: 12px;
     }
     .swipe-bg {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
+      top: 0; bottom: 0; width: 100%;
       display: flex;
       align-items: center;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       color: white;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
-    .swipe-bg-left {
-      left: 0;
-      background: var(--success);
-      justify-content: flex-start;
-      padding-left: 20px;
-    }
-    .swipe-bg-right {
-      right: 0;
-      background: var(--danger);
-      justify-content: flex-end;
-      padding-right: 20px;
-    }
+    .swipe-bg-left { left: 0; background: var(--success); justify-content: flex-start; padding-left: 20px; }
+    .swipe-bg-right { right: 0; background: var(--danger); justify-content: flex-end; padding-right: 20px; }
 
     .item {
       background: var(--surface);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: flex-start;
       position: relative;
       z-index: 2;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
-      touch-action: pan-y;
-      cursor: grab;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.25s, box-shadow 0.2s;
+      cursor: pointer;
     }
-    .item.removing {
-      transform: translateX(-120%);
-      opacity: 0;
-    }
-    .item.completing {
-      transform: translateX(120%);
-      opacity: 0;
-    }
-    .item.pinned {
-      border-left: 3px solid var(--pin);
-    }
-    .item.done {
-      opacity: 0.6;
-    }
+    .item:active { background: var(--surface2); }
+    .item.removing { transform: translateX(calc(-100% - 20px)); opacity: 0; }
+    .item.completing { transform: translateX(calc(100% + 20px)); opacity: 0; }
+    .item.pinned { border-left: 3px solid var(--pin); }
+    .item.done { opacity: 0.5; }
+    .item.overdue { border-left: 3px solid var(--danger); }
     .item.dragging {
-      opacity: 0.8;
+      opacity: 0.9;
       transform: scale(1.02);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: var(--shadow-lg);
       z-index: 100;
     }
-    .item.drag-over {
-      border-top: 2px solid var(--accent);
-    }
-    .item.overdue .item-due { color: var(--danger); }
 
     .item-check {
       background: none;
-      border: 1.5px solid var(--border);
+      border: 2px solid var(--border2);
       width: 22px;
       height: 22px;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       flex-shrink: 0;
       margin-top: 1px;
@@ -434,10 +473,11 @@
       align-items: center;
       justify-content: center;
       color: transparent;
-      font-size: 12px;
-      transition: all 0.15s;
+      font-size: 11px;
+      transition: all 0.2s;
     }
-    .item-check:active { transform: scale(0.85); }
+    .item-check:active { transform: scale(0.8); }
+    .item-check:hover { border-color: var(--accent); }
     .item.done .item-check {
       background: var(--accent);
       border-color: var(--accent);
@@ -445,63 +485,72 @@
     }
     .item.done .item-text {
       text-decoration: line-through;
-      color: var(--text2);
+      color: var(--text3);
     }
 
     .item-body { flex: 1; min-width: 0; }
-    .item-top-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    .item-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .item-text {
-      font-size: 15px;
-      line-height: 1.4;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.5;
       word-wrap: break-word;
       flex: 1;
     }
     .item-pin-icon {
       color: var(--pin);
-      font-size: 12px;
+      font-size: 11px;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 3px;
     }
     .item-meta {
       display: flex;
       gap: 8px;
       align-items: center;
-      margin-top: 5px;
+      margin-top: 6px;
       flex-wrap: wrap;
     }
     .item-time {
-      font-size: 12px;
-      color: var(--text2);
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 500;
     }
     .item-tag-badge {
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      padding: 2px 7px;
-      border-radius: 4px;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
     }
-    .item-tag-badge.task { color: var(--task); background: rgba(255,107,107,0.12); }
-    .item-tag-badge.call { color: var(--call); background: rgba(78,205,196,0.12); }
-    .item-tag-badge.idea { color: var(--idea); background: rgba(255,230,109,0.12); }
-    .item-tag-badge.text { color: var(--text-tag); background: rgba(162,155,254,0.12); }
+    .item-tag-badge.task { color: var(--task); background: var(--task-bg); }
+    .item-tag-badge.call { color: var(--call); background: var(--call-bg); }
+    .item-tag-badge.idea { color: var(--idea); background: var(--idea-bg); }
+    .item-tag-badge.text { color: var(--text-tag); background: var(--text-tag-bg); }
     .item-due {
       font-size: 11px;
-      color: var(--text2);
+      color: var(--text3);
       display: flex;
       align-items: center;
       gap: 3px;
+      font-weight: 500;
     }
+    .item.overdue .item-due { color: var(--danger); font-weight: 600; }
 
     /* ── Subtasks ── */
-    .subtasks {
-      margin-top: 8px;
-      padding-left: 4px;
+    .subtasks { margin-top: 10px; padding-left: 2px; }
+    .subtask-progress {
+      height: 3px;
+      background: var(--surface3);
+      border-radius: 3px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .subtask-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 3px;
+      transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     .subtask {
       display: flex;
@@ -510,17 +559,16 @@
       padding: 4px 0;
     }
     .subtask-check {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      border: 1.5px solid var(--border);
+      width: 16px; height: 16px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border2);
       background: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       color: transparent;
-      font-size: 10px;
+      font-size: 9px;
       flex-shrink: 0;
       transition: all 0.15s;
     }
@@ -529,35 +577,17 @@
       border-color: var(--accent);
       color: white;
     }
-    .subtask-text {
-      font-size: 13px;
-      color: var(--text2);
-    }
-    .subtask.done .subtask-text {
-      text-decoration: line-through;
-      opacity: 0.5;
-    }
+    .subtask-text { font-size: 13px; color: var(--text2); font-weight: 500; }
+    .subtask.done .subtask-text { text-decoration: line-through; opacity: 0.4; }
     .subtask-delete {
-      background: none;
-      border: none;
-      color: var(--text3);
-      font-size: 14px;
-      cursor: pointer;
-      padding: 0 4px;
-      opacity: 0;
-      transition: opacity 0.15s;
+      background: none; border: none; color: var(--text3);
+      font-size: 14px; cursor: pointer; padding: 0 4px;
+      opacity: 0; transition: opacity 0.15s; margin-left: auto;
     }
-    .subtask:hover .subtask-delete,
-    .subtask:active .subtask-delete { opacity: 0.6; }
-    @media (hover: none) { .subtask-delete { opacity: 0.4; } }
+    .subtask:hover .subtask-delete { opacity: 0.6; }
+    @media (hover: none) { .subtask-delete { opacity: 0.3; } }
 
-    .add-subtask {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 0;
-      margin-top: 2px;
-    }
+    .add-subtask { margin-top: 4px; }
     .add-subtask-input {
       background: none;
       border: none;
@@ -565,227 +595,259 @@
       color: var(--text);
       font-size: 13px;
       font-family: inherit;
+      font-weight: 500;
       outline: none;
-      padding: 2px 0;
+      padding: 4px 0;
       width: 100%;
+      transition: border-color 0.2s;
     }
+    .add-subtask-input:focus { border-color: var(--accent); }
     .add-subtask-input::placeholder { color: var(--text3); }
-    .subtask-progress {
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 6px;
-      overflow: hidden;
-    }
-    .subtask-progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width 0.3s;
-    }
 
-    /* ── Item actions row ── */
+    /* ── Item Actions ── */
     .item-actions {
       display: none;
-      gap: 4px;
-      margin-top: 8px;
-      padding-top: 8px;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
+      animation: slideDown 0.2s ease;
     }
     .item-actions.show { display: flex; }
     .item-action-btn {
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border);
       background: var(--surface2);
       color: var(--text2);
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       font-family: inherit;
       transition: all 0.15s;
     }
-    .item-action-btn:active { transform: scale(0.95); }
+    .item-action-btn:active { transform: scale(0.93); }
+    .item-action-btn:hover { background: var(--surface3); color: var(--text); }
     .item-action-btn.danger { color: var(--danger); }
+    .item-action-btn.danger:hover { background: var(--danger-bg); }
 
-    /* ── Edit Modal ── */
+    /* ── Modals ── */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       z-index: 200;
       align-items: flex-end;
       justify-content: center;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .modal-overlay.show { display: flex; }
     .modal {
       background: var(--surface);
-      border-radius: 20px 20px 0 0;
+      border: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
       width: 100%;
-      max-width: 500px;
-      max-height: 80dvh;
-      padding: 20px;
+      max-width: 520px;
+      max-height: 85dvh;
+      padding: 8px 24px 32px;
       overflow-y: auto;
+      animation: modalUp 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes modalUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border2);
+      border-radius: 4px;
+      margin: 8px auto 20px;
     }
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
-    .modal-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
+    .modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
     .modal-close {
-      background: none;
-      border: none;
+      background: var(--surface2);
+      border: 1px solid var(--border);
       color: var(--text2);
-      font-size: 24px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
       cursor: pointer;
-      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
     }
-    .modal-field {
-      margin-bottom: 16px;
-    }
+    .modal-close:hover { background: var(--surface3); }
+
+    .modal-field { margin-bottom: 20px; }
     .modal-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text2);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
     }
     .modal-textarea {
       width: 100%;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 12px;
+      padding: 14px;
       color: var(--text);
       font-size: 15px;
+      font-weight: 500;
       font-family: inherit;
       resize: none;
       outline: none;
-      min-height: 80px;
+      min-height: 100px;
+      line-height: 1.5;
+      transition: border-color 0.2s;
     }
+    .modal-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
     .modal-date-input {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 10px 12px;
+      padding: 12px 14px;
       color: var(--text);
       font-size: 14px;
       font-family: inherit;
+      font-weight: 500;
       outline: none;
       width: 100%;
       color-scheme: dark;
+      transition: border-color 0.2s;
     }
+    .modal-date-input:focus { border-color: var(--accent); }
     [data-theme="light"] .modal-date-input { color-scheme: light; }
-    .modal-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .modal-tags { display: flex; gap: 8px; flex-wrap: wrap; }
     .modal-tag {
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 20px;
       border: 1.5px solid var(--border);
       background: none;
-      color: var(--text2);
+      color: var(--text3);
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
       transition: all 0.15s;
     }
-    .modal-tag.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-    .modal-tag[data-tag="task"].active { border-color: var(--task); color: var(--task); }
-    .modal-tag[data-tag="call"].active { border-color: var(--call); color: var(--call); }
-    .modal-tag[data-tag="idea"].active { border-color: var(--idea); color: var(--idea); }
-    .modal-tag[data-tag="text"].active { border-color: var(--text-tag); color: var(--text-tag); }
+    .modal-tag:active { transform: scale(0.93); }
+    .modal-tag.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .modal-tag[data-tag="task"].active { border-color: var(--task); color: var(--task); background: var(--task-bg); }
+    .modal-tag[data-tag="call"].active { border-color: var(--call); color: var(--call); background: var(--call-bg); }
+    .modal-tag[data-tag="idea"].active { border-color: var(--idea); color: var(--idea); background: var(--idea-bg); }
+    .modal-tag[data-tag="text"].active { border-color: var(--text-tag); color: var(--text-tag); background: var(--text-tag-bg); }
     .modal-save {
       width: 100%;
       padding: 14px;
-      border-radius: var(--radius);
+      border-radius: var(--radius-sm);
       border: none;
       background: var(--accent);
       color: white;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
       font-family: inherit;
-      margin-top: 8px;
-      transition: transform 0.1s;
+      margin-top: 4px;
+      transition: all 0.15s;
+      box-shadow: 0 4px 16px rgba(139,92,246,0.3);
     }
     .modal-save:active { transform: scale(0.98); }
+    .modal-save:hover { box-shadow: 0 4px 24px rgba(139,92,246,0.5); }
 
-    /* ── Export Modal ── */
-    .export-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    /* ── Export ── */
+    .export-options { display: flex; flex-direction: column; gap: 8px; }
     .export-btn {
-      padding: 14px 16px;
+      padding: 16px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: var(--surface2);
       color: var(--text);
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       font-family: inherit;
       text-align: left;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       transition: all 0.15s;
     }
     .export-btn:active { transform: scale(0.98); }
-    .export-btn .export-icon { font-size: 20px; width: 28px; text-align: center; }
-    .export-btn .export-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
+    .export-btn:hover { background: var(--surface3); border-color: var(--border2); }
+    .export-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .export-label { font-size: 12px; color: var(--text3); margin-top: 2px; font-weight: 400; }
 
-    /* ── Empty State ── */
+    /* ── Empty ── */
     .empty {
       text-align: center;
-      padding: 60px 20px;
-      color: var(--text2);
+      padding: 80px 20px;
+      color: var(--text3);
     }
-    .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.3; }
-    .empty-text { font-size: 15px; line-height: 1.5; }
+    .empty-icon {
+      width: 64px; height: 64px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 24px;
+    }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .empty-text { font-size: 14px; line-height: 1.5; }
 
     /* ── Toast ── */
     .toast {
       position: fixed;
-      bottom: 40px;
+      bottom: 36px;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: var(--text);
       color: var(--bg);
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-size: 14px;
-      font-weight: 500;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 300;
       pointer-events: none;
+      box-shadow: var(--shadow-lg);
     }
     .toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
-
-    @media (hover: none) {
-      .subtask-delete { opacity: 0.3; }
-    }
   </style>
 </head>
 <body>
+<div class="app">
 
   <!-- Header -->
   <div class="header">
@@ -795,33 +857,33 @@
     </div>
     <div class="header-actions">
       <button class="icon-btn" id="searchToggle" aria-label="Search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
       <button class="icon-btn" id="statsToggle" aria-label="Stats">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </button>
       <button class="icon-btn" id="exportToggle" aria-label="Export">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </button>
       <button class="icon-btn" id="themeToggle" aria-label="Theme">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
     </div>
   </div>
 
   <!-- Stats -->
   <div class="stats-bar" id="statsBar">
-    <div class="stat-card"><div class="stat-value" id="statOpen">0</div><div class="stat-label">Open</div></div>
-    <div class="stat-card"><div class="stat-value" id="statDone">0</div><div class="stat-label">Done</div></div>
-    <div class="stat-card"><div class="stat-value" id="statWeek">0</div><div class="stat-label">This Week</div></div>
-    <div class="stat-card"><div class="stat-value streak" id="statStreak">0</div><div class="stat-label">Day Streak</div></div>
+    <div class="stat-card"><div class="stat-value open" id="statOpen">0</div><div class="stat-label">Open</div></div>
+    <div class="stat-card"><div class="stat-value done" id="statDone">0</div><div class="stat-label">Done</div></div>
+    <div class="stat-card"><div class="stat-value" id="statWeek">0</div><div class="stat-label">This week</div></div>
+    <div class="stat-card"><div class="stat-value streak" id="statStreak">0</div><div class="stat-label">Streak</div></div>
   </div>
 
   <!-- Search -->
   <div class="search-wrap" id="searchWrap">
     <div class="search-box">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="search-input" id="searchInput" type="text" placeholder="Search dumps...">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search your dumps...">
       <button class="search-clear" id="searchClear">&times;</button>
     </div>
   </div>
@@ -836,7 +898,7 @@
           <span id="dueBtnText">Due date</span>
         </button>
         <input type="date" class="due-input" id="dueInput">
-        <button class="pin-btn" id="pinBtn">Pin</button>
+        <button class="pin-btn" id="pinBtn">Pin to top</button>
       </div>
       <div class="capture-bottom">
         <div class="tags">
@@ -874,880 +936,456 @@
   <!-- List -->
   <div class="list" id="list"></div>
 
-  <!-- Edit Modal -->
-  <div class="modal-overlay" id="editModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">Edit</span>
-        <button class="modal-close" id="editClose">&times;</button>
-      </div>
-      <div class="modal-field">
-        <div class="modal-label">Content</div>
-        <textarea class="modal-textarea" id="editText"></textarea>
-      </div>
-      <div class="modal-field">
-        <div class="modal-label">Tag</div>
-        <div class="modal-tags" id="editTags">
-          <button class="modal-tag" data-tag="thought">Thought</button>
-          <button class="modal-tag" data-tag="task">Task</button>
-          <button class="modal-tag" data-tag="call">Call</button>
-          <button class="modal-tag" data-tag="idea">Idea</button>
-          <button class="modal-tag" data-tag="text">Text</button>
-        </div>
-      </div>
-      <div class="modal-field">
-        <div class="modal-label">Due Date</div>
-        <input type="date" class="modal-date-input" id="editDue">
-      </div>
-      <button class="modal-save" id="editSave">Save Changes</button>
+</div><!-- .app -->
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Edit item</span>
+      <button class="modal-close" id="editClose">&times;</button>
     </div>
-  </div>
-
-  <!-- Export Modal -->
-  <div class="modal-overlay" id="exportModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">Export & Backup</span>
-        <button class="modal-close" id="exportClose">&times;</button>
-      </div>
-      <div class="export-options">
-        <button class="export-btn" id="exportJSON">
-          <span class="export-icon">{}</span>
-          <div><div>JSON Backup</div><div class="export-label">Full data, reimportable</div></div>
-        </button>
-        <button class="export-btn" id="exportText">
-          <span class="export-icon">T</span>
-          <div><div>Plain Text</div><div class="export-label">Human readable, grouped by day</div></div>
-        </button>
-        <button class="export-btn" id="exportCSV">
-          <span class="export-icon">,</span>
-          <div><div>CSV Spreadsheet</div><div class="export-label">Open in Excel or Google Sheets</div></div>
-        </button>
-        <button class="export-btn" id="importJSON">
-          <span class="export-icon">+</span>
-          <div><div>Import JSON Backup</div><div class="export-label">Restore from a previous export</div></div>
-        </button>
-      </div>
-      <input type="file" id="importFile" accept=".json" style="display:none">
+    <div class="modal-field">
+      <div class="modal-label">Content</div>
+      <textarea class="modal-textarea" id="editText"></textarea>
     </div>
+    <div class="modal-field">
+      <div class="modal-label">Tag</div>
+      <div class="modal-tags" id="editTags">
+        <button class="modal-tag" data-tag="thought">Thought</button>
+        <button class="modal-tag" data-tag="task">Task</button>
+        <button class="modal-tag" data-tag="call">Call</button>
+        <button class="modal-tag" data-tag="idea">Idea</button>
+        <button class="modal-tag" data-tag="text">Text</button>
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Due date</div>
+      <input type="date" class="modal-date-input" id="editDue">
+    </div>
+    <button class="modal-save" id="editSave">Save Changes</button>
   </div>
+</div>
 
-  <div class="toast" id="toast"></div>
+<!-- Export Modal -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Export & Backup</span>
+      <button class="modal-close" id="exportClose">&times;</button>
+    </div>
+    <div class="export-options">
+      <button class="export-btn" id="exportJSON">
+        <span class="export-icon">{&thinsp;}</span>
+        <div><div>JSON Backup</div><div class="export-label">Full data, can be re-imported later</div></div>
+      </button>
+      <button class="export-btn" id="exportText">
+        <span class="export-icon">Aa</span>
+        <div><div>Plain Text</div><div class="export-label">Human readable, grouped by day</div></div>
+      </button>
+      <button class="export-btn" id="exportCSV">
+        <span class="export-icon">csv</span>
+        <div><div>CSV Spreadsheet</div><div class="export-label">Open in Excel or Google Sheets</div></div>
+      </button>
+      <button class="export-btn" id="importJSON">
+        <span class="export-icon">+</span>
+        <div><div>Import Backup</div><div class="export-label">Restore from a JSON export</div></div>
+      </button>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+  </div>
+</div>
 
-  <script>
-    // ═══════════════════════════════
-    //  DATA LAYER
-    // ═══════════════════════════════
-    const STORAGE_KEY = 'braindump_items';
-    const THEME_KEY = 'braindump_theme';
+<div class="toast" id="toast"></div>
 
-    function getItems() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-      catch { return []; }
-    }
-    function saveItems(items) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
+<script>
+  // ═══════════════════════════════
+  //  DATA
+  // ═══════════════════════════════
+  const STORAGE_KEY = 'braindump_items';
+  const THEME_KEY = 'braindump_theme';
 
-    // ═══════════════════════════════
-    //  STATE
-    // ═══════════════════════════════
-    let activeTag = null;
-    let activeFilter = 'all';
-    let searchQuery = '';
-    let editingId = null;
-    let capturePinned = false;
-    let captureDue = '';
-    let expandedItems = new Set();
+  function getItems() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function saveItems(items) { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
 
-    // ═══════════════════════════════
-    //  ELEMENTS
-    // ═══════════════════════════════
-    const $ = id => document.getElementById(id);
-    const input = $('input');
-    const sendBtn = $('sendBtn');
-    const listEl = $('list');
-    const toastEl = $('toast');
-    const captureBox = $('captureBox');
-    const captureExtras = $('captureExtras');
-    const searchWrap = $('searchWrap');
-    const searchInput = $('searchInput');
-    const searchClear = $('searchClear');
-    const statsBar = $('statsBar');
-    const dueBtn = $('dueBtn');
-    const dueBtnText = $('dueBtnText');
-    const dueInput = $('dueInput');
-    const pinBtn = $('pinBtn');
-    const micBtn = $('micBtn');
+  // ═══════════════════════════════
+  //  STATE
+  // ═══════════════════════════════
+  let activeTag = null, activeFilter = 'all', searchQuery = '', editingId = null;
+  let capturePinned = false, captureDue = '';
+  let expandedItems = new Set();
 
-    // ═══════════════════════════════
-    //  THEME
-    // ═══════════════════════════════
-    function initTheme() {
-      const saved = localStorage.getItem(THEME_KEY);
-      if (saved) document.documentElement.setAttribute('data-theme', saved);
-    }
-    initTheme();
+  const $ = id => document.getElementById(id);
+  const input = $('input'), sendBtn = $('sendBtn'), listEl = $('list'), toastEl = $('toast');
+  const captureBox = $('captureBox'), captureExtras = $('captureExtras');
+  const searchWrap = $('searchWrap'), searchInput = $('searchInput'), searchClear = $('searchClear');
+  const statsBar = $('statsBar'), dueBtn = $('dueBtn'), dueBtnText = $('dueBtnText');
+  const dueInput = $('dueInput'), pinBtn = $('pinBtn'), micBtn = $('micBtn');
 
-    $('themeToggle').addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next === 'dark' ? '' : next);
-      localStorage.setItem(THEME_KEY, next);
-      if (next === 'dark') document.documentElement.removeAttribute('data-theme');
-      haptic();
-    });
+  // ═══════════════════════════════
+  //  THEME
+  // ═══════════════════════════════
+  (function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  })();
 
-    // ═══════════════════════════════
-    //  HEADER DATE
-    // ═══════════════════════════════
-    $('headerDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-
-    // ═══════════════════════════════
-    //  HAPTIC FEEDBACK
-    // ═══════════════════════════════
-    function haptic(style = 'light') {
-      if (navigator.vibrate) {
-        navigator.vibrate(style === 'heavy' ? 30 : style === 'medium' ? 15 : 8);
-      }
-    }
-
-    // ═══════════════════════════════
-    //  CAPTURE INPUT
-    // ═══════════════════════════════
-    input.addEventListener('input', () => {
-      input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
-      const hasText = input.value.trim().length > 0;
-      sendBtn.classList.toggle('ready', hasText);
-      captureExtras.classList.toggle('show', hasText);
-    });
-    input.addEventListener('focus', () => captureBox.classList.add('focused'));
-    input.addEventListener('blur', () => captureBox.classList.remove('focused'));
-
-    // Tags
-    document.querySelectorAll('.capture .tag-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tag = btn.dataset.tag;
-        if (activeTag === tag) {
-          activeTag = null;
-          btn.classList.remove('active');
-        } else {
-          document.querySelectorAll('.capture .tag-btn').forEach(b => b.classList.remove('active'));
-          activeTag = tag;
-          btn.classList.add('active');
-        }
-        haptic();
-        input.focus();
-      });
-    });
-
-    // Due date
-    dueBtn.addEventListener('click', () => dueInput.showPicker?.() || dueInput.click());
-    dueInput.addEventListener('change', () => {
-      captureDue = dueInput.value;
-      if (captureDue) {
-        dueBtnText.textContent = formatDueShort(captureDue);
-        dueBtn.classList.add('set');
-      } else {
-        dueBtnText.textContent = 'Due date';
-        dueBtn.classList.remove('set');
-      }
-    });
-
-    // Pin
-    pinBtn.addEventListener('click', () => {
-      capturePinned = !capturePinned;
-      pinBtn.classList.toggle('active', capturePinned);
-      haptic();
-    });
-
-    // Filters
-    $('filters').addEventListener('click', (e) => {
-      const btn = e.target.closest('.filter-btn');
-      if (!btn) return;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      haptic();
-      renderList();
-    });
-
-    // ═══════════════════════════════
-    //  SEARCH
-    // ═══════════════════════════════
-    $('searchToggle').addEventListener('click', () => {
-      const showing = searchWrap.classList.toggle('show');
-      $('searchToggle').classList.toggle('active', showing);
-      if (showing) searchInput.focus();
-      else { searchInput.value = ''; searchQuery = ''; searchClear.classList.remove('show'); renderList(); }
-      haptic();
-    });
-    searchInput.addEventListener('input', () => {
-      searchQuery = searchInput.value.toLowerCase().trim();
-      searchClear.classList.toggle('show', searchQuery.length > 0);
-      renderList();
-    });
-    searchClear.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      searchClear.classList.remove('show');
-      renderList();
-      searchInput.focus();
-    });
-
-    // ═══════════════════════════════
-    //  STATS
-    // ═══════════════════════════════
-    $('statsToggle').addEventListener('click', () => {
-      const showing = statsBar.classList.toggle('show');
-      $('statsToggle').classList.toggle('active', showing);
-      if (showing) updateStats();
-      haptic();
-    });
-
-    function updateStats() {
-      const items = getItems();
-      const now = new Date();
-      const weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7);
-
-      $('statOpen').textContent = items.filter(i => !i.done).length;
-      $('statDone').textContent = items.filter(i => i.done).length;
-      $('statWeek').textContent = items.filter(i => new Date(i.time) >= weekAgo).length;
-      $('statStreak').textContent = calcStreak(items);
-    }
-
-    function calcStreak(items) {
-      if (!items.length) return 0;
-      const days = new Set(items.map(i => new Date(i.time).toISOString().split('T')[0]));
-      let streak = 0;
-      let d = new Date();
-      // check if today has items, if not start from yesterday
-      if (!days.has(d.toISOString().split('T')[0])) {
-        d.setDate(d.getDate() - 1);
-      }
-      while (days.has(d.toISOString().split('T')[0])) {
-        streak++;
-        d.setDate(d.getDate() - 1);
-      }
-      return streak;
-    }
-
-    // ═══════════════════════════════
-    //  VOICE INPUT
-    // ═══════════════════════════════
-    let recognition = null;
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      let isRecording = false;
-
-      micBtn.addEventListener('click', () => {
-        if (isRecording) {
-          recognition.stop();
-          return;
-        }
-        recognition.start();
-        isRecording = true;
-        micBtn.classList.add('recording');
-        haptic('medium');
-      });
-
-      recognition.onresult = (e) => {
-        let transcript = '';
-        for (let i = 0; i < e.results.length; i++) {
-          transcript += e.results[i][0].transcript;
-        }
-        input.value = transcript;
-        input.dispatchEvent(new Event('input'));
-      };
-
-      recognition.onend = () => {
-        isRecording = false;
-        micBtn.classList.remove('recording');
-      };
-
-      recognition.onerror = () => {
-        isRecording = false;
-        micBtn.classList.remove('recording');
-        showToast('Mic access denied');
-      };
+  $('themeToggle').addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem(THEME_KEY, 'dark');
     } else {
-      micBtn.style.display = 'none';
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem(THEME_KEY, 'light');
     }
+    haptic();
+  });
 
-    // ═══════════════════════════════
-    //  ADD ITEM
-    // ═══════════════════════════════
-    function addItem() {
-      const text = input.value.trim();
-      if (!text) return;
+  // ═══════════════════════════════
+  //  HEADER DATE
+  // ═══════════════════════════════
+  $('headerDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-      const item = {
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-        text,
-        tag: activeTag || 'thought',
-        time: new Date().toISOString(),
-        done: false,
-        pinned: capturePinned,
-        due: captureDue || null,
-        subtasks: [],
-      };
+  // ═══════════════════════════════
+  //  HAPTIC
+  // ═══════════════════════════════
+  function haptic(style = 'light') {
+    if (navigator.vibrate) navigator.vibrate(style === 'heavy' ? 30 : style === 'medium' ? 15 : 8);
+  }
 
-      const items = getItems();
-      items.unshift(item);
-      saveItems(items);
+  // ═══════════════════════════════
+  //  CAPTURE
+  // ═══════════════════════════════
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    const has = input.value.trim().length > 0;
+    sendBtn.classList.toggle('ready', has);
+    captureExtras.classList.toggle('show', has);
+  });
+  input.addEventListener('focus', () => captureBox.classList.add('focused'));
+  input.addEventListener('blur', () => captureBox.classList.remove('focused'));
 
-      // Reset
-      input.value = '';
-      input.style.height = 'auto';
-      sendBtn.classList.remove('ready');
-      activeTag = null;
-      capturePinned = false;
-      captureDue = '';
-      document.querySelectorAll('.capture .tag-btn').forEach(b => b.classList.remove('active'));
-      pinBtn.classList.remove('active');
-      dueBtn.classList.remove('set');
-      dueBtnText.textContent = 'Due date';
-      dueInput.value = '';
-      captureExtras.classList.remove('show');
-
-      haptic('medium');
-      renderList();
-      updateStats();
-      showToast('Captured');
-      input.focus();
-    }
-
-    sendBtn.addEventListener('click', addItem);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addItem(); }
+  document.querySelectorAll('.capture .tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag;
+      if (activeTag === tag) { activeTag = null; btn.classList.remove('active'); }
+      else { document.querySelectorAll('.capture .tag-btn').forEach(b => b.classList.remove('active')); activeTag = tag; btn.classList.add('active'); }
+      haptic(); input.focus();
     });
+  });
 
-    // ═══════════════════════════════
-    //  ITEM ACTIONS
-    // ═══════════════════════════════
-    function toggleDone(id) {
-      const items = getItems();
-      const item = items.find(i => i.id === id);
-      if (item) {
-        item.done = !item.done;
-        saveItems(items);
-        haptic('medium');
-        renderList();
-        updateStats();
-      }
-    }
+  dueBtn.addEventListener('click', () => dueInput.showPicker?.() || dueInput.click());
+  dueInput.addEventListener('change', () => {
+    captureDue = dueInput.value;
+    if (captureDue) { dueBtnText.textContent = formatDueShort(captureDue); dueBtn.classList.add('set'); }
+    else { dueBtnText.textContent = 'Due date'; dueBtn.classList.remove('set'); }
+  });
 
-    function deleteItem(id) {
-      const wrap = document.querySelector(`[data-wrap="${id}"]`);
-      if (wrap) {
-        const el = wrap.querySelector('.item');
-        el.classList.add('removing');
-        setTimeout(() => {
-          const items = getItems().filter(i => i.id !== id);
-          saveItems(items);
-          haptic();
-          renderList();
-          updateStats();
-        }, 250);
-      }
-    }
+  pinBtn.addEventListener('click', () => { capturePinned = !capturePinned; pinBtn.classList.toggle('active', capturePinned); haptic(); });
 
-    function togglePin(id) {
-      const items = getItems();
-      const item = items.find(i => i.id === id);
-      if (item) {
-        item.pinned = !item.pinned;
-        saveItems(items);
-        haptic('medium');
-        renderList();
-        showToast(item.pinned ? 'Pinned' : 'Unpinned');
-      }
-    }
+  $('filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    haptic(); renderList();
+  });
 
-    function toggleExpand(id) {
-      if (expandedItems.has(id)) expandedItems.delete(id);
-      else expandedItems.add(id);
-      haptic();
-      renderList();
-    }
-
-    // ═══════════════════════════════
-    //  EDIT MODAL
-    // ═══════════════════════════════
-    function openEdit(id) {
-      const items = getItems();
-      const item = items.find(i => i.id === id);
-      if (!item) return;
-      editingId = id;
-      $('editText').value = item.text;
-      $('editDue').value = item.due || '';
-      document.querySelectorAll('#editTags .modal-tag').forEach(b => {
-        b.classList.toggle('active', b.dataset.tag === item.tag);
-      });
-      $('editModal').classList.add('show');
-      haptic();
-    }
-
-    $('editClose').addEventListener('click', () => { $('editModal').classList.remove('show'); editingId = null; });
-    $('editModal').addEventListener('click', (e) => { if (e.target === $('editModal')) { $('editModal').classList.remove('show'); editingId = null; } });
-
-    document.querySelectorAll('#editTags .modal-tag').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#editTags .modal-tag').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        haptic();
-      });
-    });
-
-    $('editSave').addEventListener('click', () => {
-      if (!editingId) return;
-      const items = getItems();
-      const item = items.find(i => i.id === editingId);
-      if (item) {
-        item.text = $('editText').value.trim() || item.text;
-        item.due = $('editDue').value || null;
-        const activeTagEl = document.querySelector('#editTags .modal-tag.active');
-        if (activeTagEl) item.tag = activeTagEl.dataset.tag;
-        saveItems(items);
-        haptic('medium');
-        renderList();
-        showToast('Updated');
-      }
-      $('editModal').classList.remove('show');
-      editingId = null;
-    });
-
-    // ═══════════════════════════════
-    //  SUBTASKS
-    // ═══════════════════════════════
-    function addSubtask(itemId, text) {
-      if (!text.trim()) return;
-      const items = getItems();
-      const item = items.find(i => i.id === itemId);
-      if (item) {
-        if (!item.subtasks) item.subtasks = [];
-        item.subtasks.push({
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 4),
-          text: text.trim(),
-          done: false,
-        });
-        saveItems(items);
-        haptic();
-        renderList();
-      }
-    }
-
-    function toggleSubtask(itemId, subId) {
-      const items = getItems();
-      const item = items.find(i => i.id === itemId);
-      if (item && item.subtasks) {
-        const sub = item.subtasks.find(s => s.id === subId);
-        if (sub) {
-          sub.done = !sub.done;
-          saveItems(items);
-          haptic();
-          renderList();
-        }
-      }
-    }
-
-    function deleteSubtask(itemId, subId) {
-      const items = getItems();
-      const item = items.find(i => i.id === itemId);
-      if (item && item.subtasks) {
-        item.subtasks = item.subtasks.filter(s => s.id !== subId);
-        saveItems(items);
-        haptic();
-        renderList();
-      }
-    }
-
-    // ═══════════════════════════════
-    //  SWIPE GESTURES
-    // ═══════════════════════════════
-    let swipeState = null;
-
-    function initSwipe(el, id) {
-      let startX, startY, currentX, swiping = false, locked = false;
-
-      el.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        currentX = 0;
-        swiping = false;
-        locked = false;
-      }, { passive: true });
-
-      el.addEventListener('touchmove', (e) => {
-        if (locked) return;
-        const dx = e.touches[0].clientX - startX;
-        const dy = e.touches[0].clientY - startY;
-
-        if (!swiping && Math.abs(dy) > Math.abs(dx)) { locked = true; return; }
-        if (Math.abs(dx) > 10) swiping = true;
-        if (!swiping) return;
-
-        currentX = dx;
-        el.style.transform = `translateX(${dx}px)`;
-        el.style.transition = 'none';
-      }, { passive: true });
-
-      el.addEventListener('touchend', () => {
-        if (!swiping) return;
-        el.style.transition = 'transform 0.25s cubic-bezier(0.16,1,0.3,1), opacity 0.2s';
-
-        if (currentX > 80) {
-          // Swipe right → done
-          el.classList.add('completing');
-          haptic('heavy');
-          setTimeout(() => toggleDone(id), 250);
-        } else if (currentX < -80) {
-          // Swipe left → delete
-          el.classList.add('removing');
-          haptic('heavy');
-          setTimeout(() => {
-            const items = getItems().filter(i => i.id !== id);
-            saveItems(items);
-            renderList();
-            updateStats();
-          }, 250);
-        } else {
-          el.style.transform = 'translateX(0)';
-        }
-      });
-    }
-
-    // ═══════════════════════════════
-    //  DRAG TO REORDER
-    // ═══════════════════════════════
-    let dragId = null;
-
-    function initDrag(el, id) {
-      let longPressTimer, isDragging = false;
-
-      el.addEventListener('touchstart', (e) => {
-        longPressTimer = setTimeout(() => {
-          isDragging = true;
-          dragId = id;
-          el.classList.add('dragging');
-          haptic('heavy');
-        }, 500);
-      }, { passive: true });
-
-      el.addEventListener('touchmove', () => {
-        if (!isDragging) clearTimeout(longPressTimer);
-      }, { passive: true });
-
-      el.addEventListener('touchend', () => {
-        clearTimeout(longPressTimer);
-        if (isDragging) {
-          isDragging = false;
-          el.classList.remove('dragging');
-          // find drop target
-          const allItems = document.querySelectorAll('.item.drag-over');
-          allItems.forEach(i => i.classList.remove('drag-over'));
-          dragId = null;
-          renderList();
-        }
-      });
-    }
-
-    // ═══════════════════════════════
-    //  EXPORT / IMPORT
-    // ═══════════════════════════════
-    $('exportToggle').addEventListener('click', () => { $('exportModal').classList.add('show'); haptic(); });
-    $('exportClose').addEventListener('click', () => $('exportModal').classList.remove('show'));
-    $('exportModal').addEventListener('click', (e) => { if (e.target === $('exportModal')) $('exportModal').classList.remove('show'); });
-
-    $('exportJSON').addEventListener('click', () => {
-      download('braindump-backup.json', JSON.stringify(getItems(), null, 2), 'application/json');
-      showToast('JSON exported');
-      $('exportModal').classList.remove('show');
-    });
-
-    $('exportText').addEventListener('click', () => {
-      const items = getItems();
-      const groups = {};
-      items.forEach(item => {
-        const d = new Date(item.time).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        if (!groups[d]) groups[d] = [];
-        groups[d].push(item);
-      });
-      let text = 'BRAIN DUMP EXPORT\n==================\n\n';
-      Object.entries(groups).forEach(([day, dayItems]) => {
-        text += `--- ${day} ---\n`;
-        dayItems.forEach(i => {
-          const time = new Date(i.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-          const tag = i.tag !== 'thought' ? `[${i.tag}] ` : '';
-          const done = i.done ? '[DONE] ' : '';
-          const pin = i.pinned ? '[PIN] ' : '';
-          text += `  ${time}  ${pin}${done}${tag}${i.text}\n`;
-          if (i.subtasks?.length) {
-            i.subtasks.forEach(s => { text += `    ${s.done ? '[x]' : '[ ]'} ${s.text}\n`; });
-          }
-        });
-        text += '\n';
-      });
-      download('braindump.txt', text, 'text/plain');
-      showToast('Text exported');
-      $('exportModal').classList.remove('show');
-    });
-
-    $('exportCSV').addEventListener('click', () => {
-      const items = getItems();
-      let csv = 'Time,Tag,Text,Done,Pinned,Due\n';
-      items.forEach(i => {
-        csv += `"${i.time}","${i.tag}","${i.text.replace(/"/g, '""')}",${i.done},${i.pinned || false},"${i.due || ''}"\n`;
-      });
-      download('braindump.csv', csv, 'text/csv');
-      showToast('CSV exported');
-      $('exportModal').classList.remove('show');
-    });
-
-    $('importJSON').addEventListener('click', () => $('importFile').click());
-    $('importFile').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        try {
-          const imported = JSON.parse(ev.target.result);
-          if (!Array.isArray(imported)) throw new Error();
-          const existing = getItems();
-          const existingIds = new Set(existing.map(i => i.id));
-          const newItems = imported.filter(i => !existingIds.has(i.id));
-          saveItems([...newItems, ...existing]);
-          renderList();
-          updateStats();
-          showToast(`Imported ${newItems.length} items`);
-        } catch {
-          showToast('Invalid backup file');
-        }
-      };
-      reader.readAsText(file);
-      $('exportModal').classList.remove('show');
-      e.target.value = '';
-    });
-
-    function download(filename, content, type) {
-      const blob = new Blob([content], { type });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    // ═══════════════════════════════
-    //  HELPERS
-    // ═══════════════════════════════
-    function escapeHtml(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
-    function formatDueShort(dateStr) {
-      const d = new Date(dateStr + 'T12:00:00');
-      const today = new Date(); today.setHours(0,0,0,0);
-      const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
-      const target = new Date(d); target.setHours(0,0,0,0);
-
-      if (target.getTime() === today.getTime()) return 'Today';
-      if (target.getTime() === tomorrow.getTime()) return 'Tomorrow';
-      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    function isOverdue(dateStr) {
-      if (!dateStr) return false;
-      const today = new Date(); today.setHours(0,0,0,0);
-      const due = new Date(dateStr + 'T12:00:00'); due.setHours(0,0,0,0);
-      return due < today;
-    }
-
-    function showToast(msg) {
-      toastEl.textContent = msg;
-      toastEl.classList.add('show');
-      setTimeout(() => toastEl.classList.remove('show'), 1500);
-    }
-
-    // ═══════════════════════════════
-    //  RENDER
-    // ═══════════════════════════════
-    function renderList() {
-      const items = getItems();
-      let filtered;
-
-      if (activeFilter === 'all') filtered = items.filter(i => !i.done);
-      else if (activeFilter === 'done') filtered = items.filter(i => i.done);
-      else filtered = items.filter(i => i.tag === activeFilter && !i.done);
-
-      // Search
-      if (searchQuery) {
-        filtered = filtered.filter(i =>
-          i.text.toLowerCase().includes(searchQuery) ||
-          i.tag.toLowerCase().includes(searchQuery) ||
-          (i.subtasks || []).some(s => s.text.toLowerCase().includes(searchQuery))
-        );
-      }
-
-      // Sort: pinned first, then by time
-      filtered.sort((a, b) => {
-        if (a.pinned && !b.pinned) return -1;
-        if (!a.pinned && b.pinned) return 1;
-        return 0; // keep original order (newest first)
-      });
-
-      // Update filter counts
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        const f = btn.dataset.filter;
-        let count;
-        if (f === 'all') count = items.filter(i => !i.done).length;
-        else if (f === 'done') count = items.filter(i => i.done).length;
-        else count = items.filter(i => i.tag === f && !i.done).length;
-        const existing = btn.querySelector('.filter-count');
-        if (existing) existing.remove();
-        if (count > 0) {
-          const span = document.createElement('span');
-          span.className = 'filter-count';
-          span.textContent = count;
-          btn.appendChild(span);
-        }
-      });
-
-      if (filtered.length === 0) {
-        listEl.innerHTML = `<div class="empty">
-          <div class="empty-icon">${searchQuery ? '?' : activeFilter === 'done' ? '~' : '.'}</div>
-          <div class="empty-text">${
-            searchQuery ? 'No matches found'
-            : activeFilter === 'done' ? 'No completed items yet'
-            : 'Nothing here yet.<br>Dump something above.'
-          }</div></div>`;
-        return;
-      }
-
-      // Group by day
-      const groups = {};
-      filtered.forEach(item => {
-        const key = new Date(item.time).toISOString().split('T')[0];
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(item);
-      });
-
-      const today = new Date().toISOString().split('T')[0];
-      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-
-      let html = '';
-      Object.entries(groups).forEach(([date, dayItems]) => {
-        let label;
-        if (date === today) label = 'Today';
-        else if (date === yesterday) label = 'Yesterday';
-        else label = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
-        html += `<div class="day-group"><div class="day-label">${label}</div>`;
-
-        dayItems.forEach(item => {
-          const time = new Date(item.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-          const tagHtml = item.tag !== 'thought' ? `<span class="item-tag-badge ${item.tag}">${item.tag}</span>` : '';
-          const pinHtml = item.pinned ? '<span class="item-pin-icon">&#9733;</span>' : '';
-          const isExp = expandedItems.has(item.id);
-          const overdue = !item.done && isOverdue(item.due);
-          const dueHtml = item.due ? `<span class="item-due">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-            ${formatDueShort(item.due)}</span>` : '';
-
-          // Subtasks
-          const subs = item.subtasks || [];
-          const subsDone = subs.filter(s => s.done).length;
-          let subtasksHtml = '';
-          if (subs.length > 0 || isExp) {
-            subtasksHtml += '<div class="subtasks">';
-            if (subs.length > 0) {
-              const pct = Math.round((subsDone / subs.length) * 100);
-              subtasksHtml += `<div class="subtask-progress"><div class="subtask-progress-fill" style="width:${pct}%"></div></div>`;
-            }
-            subs.forEach(s => {
-              subtasksHtml += `<div class="subtask ${s.done ? 'done' : ''}">
-                <button class="subtask-check" onclick="toggleSubtask('${item.id}','${s.id}')">&#10003;</button>
-                <span class="subtask-text">${escapeHtml(s.text)}</span>
-                <button class="subtask-delete" onclick="deleteSubtask('${item.id}','${s.id}')">&times;</button>
-              </div>`;
-            });
-            if (isExp) {
-              subtasksHtml += `<div class="add-subtask">
-                <input class="add-subtask-input" placeholder="Add subtask..." data-parent="${item.id}"
-                  onkeydown="if(event.key==='Enter'){addSubtask('${item.id}',this.value);this.value=''}">
-              </div>`;
-            }
-            subtasksHtml += '</div>';
-          }
-
-          // Actions row
-          const actionsHtml = `<div class="item-actions ${isExp ? 'show' : ''}">
-            <button class="item-action-btn" onclick="openEdit('${item.id}')">Edit</button>
-            <button class="item-action-btn" onclick="togglePin('${item.id}')">${item.pinned ? 'Unpin' : 'Pin'}</button>
-            <button class="item-action-btn" onclick="addSubtask('${item.id}', prompt('Subtask:') || '')">+ Subtask</button>
-            <button class="item-action-btn danger" onclick="deleteItem('${item.id}')">Delete</button>
-          </div>`;
-
-          html += `<div class="item-wrap" data-wrap="${item.id}">
-            <div class="swipe-bg swipe-bg-left">Done</div>
-            <div class="swipe-bg swipe-bg-right">Delete</div>
-            <div class="item ${item.done ? 'done' : ''} ${item.pinned ? 'pinned' : ''} ${overdue ? 'overdue' : ''}"
-                 data-id="${item.id}" onclick="toggleExpand('${item.id}')">
-              <button class="item-check" onclick="event.stopPropagation();toggleDone('${item.id}')">&#10003;</button>
-              <div class="item-body">
-                <div class="item-top-row">
-                  <div class="item-text">${highlightSearch(escapeHtml(item.text))}</div>
-                  ${pinHtml}
-                </div>
-                <div class="item-meta">
-                  <span class="item-time">${time}</span>
-                  ${tagHtml}
-                  ${dueHtml}
-                  ${subs.length ? `<span class="item-time">${subsDone}/${subs.length}</span>` : ''}
-                </div>
-                ${subtasksHtml}
-                ${actionsHtml}
-              </div>
-            </div>
-          </div>`;
-        });
-        html += '</div>';
-      });
-
-      listEl.innerHTML = html;
-
-      // Init swipe on all items
-      document.querySelectorAll('.item[data-id]').forEach(el => {
-        const id = el.dataset.id;
-        initSwipe(el, id);
-      });
-
-      if (statsBar.classList.contains('show')) updateStats();
-    }
-
-    function highlightSearch(html) {
-      if (!searchQuery) return html;
-      const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-      return html.replace(regex, '<mark style="background:rgba(108,92,231,0.3);color:inherit;border-radius:2px;padding:0 2px">$1</mark>');
-    }
-
-    // ═══════════════════════════════
-    //  INIT
-    // ═══════════════════════════════
+  // ═══════════════════════════════
+  //  SEARCH
+  // ═══════════════════════════════
+  $('searchToggle').addEventListener('click', () => {
+    const on = searchWrap.classList.toggle('show');
+    $('searchToggle').classList.toggle('active', on);
+    if (on) searchInput.focus();
+    else { searchInput.value = ''; searchQuery = ''; searchClear.classList.remove('show'); renderList(); }
+    haptic();
+  });
+  searchInput.addEventListener('input', () => {
+    searchQuery = searchInput.value.toLowerCase().trim();
+    searchClear.classList.toggle('show', searchQuery.length > 0);
     renderList();
+  });
+  searchClear.addEventListener('click', () => { searchInput.value = ''; searchQuery = ''; searchClear.classList.remove('show'); renderList(); searchInput.focus(); });
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+  // ═══════════════════════════════
+  //  STATS
+  // ═══════════════════════════════
+  $('statsToggle').addEventListener('click', () => {
+    const on = statsBar.classList.toggle('show');
+    $('statsToggle').classList.toggle('active', on);
+    if (on) updateStats();
+    haptic();
+  });
+
+  function updateStats() {
+    const items = getItems();
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    $('statOpen').textContent = items.filter(i => !i.done).length;
+    $('statDone').textContent = items.filter(i => i.done).length;
+    $('statWeek').textContent = items.filter(i => new Date(i.time) >= weekAgo).length;
+    $('statStreak').textContent = calcStreak(items);
+  }
+
+  function calcStreak(items) {
+    if (!items.length) return 0;
+    const days = new Set(items.map(i => new Date(i.time).toISOString().split('T')[0]));
+    let streak = 0, d = new Date();
+    if (!days.has(d.toISOString().split('T')[0])) d.setDate(d.getDate() - 1);
+    while (days.has(d.toISOString().split('T')[0])) { streak++; d.setDate(d.getDate() - 1); }
+    return streak;
+  }
+
+  // ═══════════════════════════════
+  //  VOICE
+  // ═══════════════════════════════
+  let recognition = null;
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.continuous = false; recognition.interimResults = true; recognition.lang = 'en-US';
+    let isRec = false;
+    micBtn.addEventListener('click', () => { if (isRec) { recognition.stop(); return; } recognition.start(); isRec = true; micBtn.classList.add('recording'); haptic('medium'); });
+    recognition.onresult = (e) => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; input.value = t; input.dispatchEvent(new Event('input')); };
+    recognition.onend = () => { isRec = false; micBtn.classList.remove('recording'); };
+    recognition.onerror = () => { isRec = false; micBtn.classList.remove('recording'); showToast('Mic access denied'); };
+  } else { micBtn.style.display = 'none'; }
+
+  // ═══════════════════════════════
+  //  ADD ITEM
+  // ═══════════════════════════════
+  function addItem() {
+    const text = input.value.trim();
+    if (!text) return;
+    const item = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), text, tag: activeTag || 'thought', time: new Date().toISOString(), done: false, pinned: capturePinned, due: captureDue || null, subtasks: [] };
+    const items = getItems(); items.unshift(item); saveItems(items);
+    input.value = ''; input.style.height = 'auto'; sendBtn.classList.remove('ready');
+    activeTag = null; capturePinned = false; captureDue = '';
+    document.querySelectorAll('.capture .tag-btn').forEach(b => b.classList.remove('active'));
+    pinBtn.classList.remove('active'); dueBtn.classList.remove('set'); dueBtnText.textContent = 'Due date'; dueInput.value = '';
+    captureExtras.classList.remove('show');
+    haptic('medium'); renderList(); updateStats(); showToast('Captured'); input.focus();
+  }
+
+  sendBtn.addEventListener('click', addItem);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addItem(); } });
+
+  // ═══════════════════════════════
+  //  ITEM ACTIONS
+  // ═══════════════════════════════
+  function toggleDone(id) {
+    const items = getItems(), item = items.find(i => i.id === id);
+    if (item) { item.done = !item.done; saveItems(items); haptic('medium'); renderList(); updateStats(); }
+  }
+  function deleteItem(id) {
+    const wrap = document.querySelector(`[data-wrap="${id}"]`);
+    if (wrap) { wrap.querySelector('.item').classList.add('removing'); setTimeout(() => { saveItems(getItems().filter(i => i.id !== id)); haptic(); renderList(); updateStats(); }, 280); }
+  }
+  function togglePin(id) {
+    const items = getItems(), item = items.find(i => i.id === id);
+    if (item) { item.pinned = !item.pinned; saveItems(items); haptic('medium'); renderList(); showToast(item.pinned ? 'Pinned' : 'Unpinned'); }
+  }
+  function toggleExpand(id) { if (expandedItems.has(id)) expandedItems.delete(id); else expandedItems.add(id); haptic(); renderList(); }
+
+  // ═══════════════════════════════
+  //  EDIT MODAL
+  // ═══════════════════════════════
+  function openEdit(id) {
+    const item = getItems().find(i => i.id === id);
+    if (!item) return;
+    editingId = id; $('editText').value = item.text; $('editDue').value = item.due || '';
+    document.querySelectorAll('#editTags .modal-tag').forEach(b => b.classList.toggle('active', b.dataset.tag === item.tag));
+    $('editModal').classList.add('show'); haptic();
+  }
+  $('editClose').addEventListener('click', () => { $('editModal').classList.remove('show'); editingId = null; });
+  $('editModal').addEventListener('click', (e) => { if (e.target === $('editModal')) { $('editModal').classList.remove('show'); editingId = null; } });
+  document.querySelectorAll('#editTags .modal-tag').forEach(btn => {
+    btn.addEventListener('click', () => { document.querySelectorAll('#editTags .modal-tag').forEach(b => b.classList.remove('active')); btn.classList.add('active'); haptic(); });
+  });
+  $('editSave').addEventListener('click', () => {
+    if (!editingId) return;
+    const items = getItems(), item = items.find(i => i.id === editingId);
+    if (item) {
+      item.text = $('editText').value.trim() || item.text; item.due = $('editDue').value || null;
+      const at = document.querySelector('#editTags .modal-tag.active');
+      if (at) item.tag = at.dataset.tag;
+      saveItems(items); haptic('medium'); renderList(); showToast('Updated');
     }
-  </script>
+    $('editModal').classList.remove('show'); editingId = null;
+  });
+
+  // ═══════════════════════════════
+  //  SUBTASKS
+  // ═══════════════════════════════
+  function addSubtask(itemId, text) {
+    if (!text || !text.trim()) return;
+    const items = getItems(), item = items.find(i => i.id === itemId);
+    if (item) { if (!item.subtasks) item.subtasks = []; item.subtasks.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,4), text: text.trim(), done: false }); saveItems(items); haptic(); renderList(); }
+  }
+  function toggleSubtask(iid, sid) {
+    const items = getItems(), item = items.find(i => i.id === iid);
+    if (item?.subtasks) { const s = item.subtasks.find(s => s.id === sid); if (s) { s.done = !s.done; saveItems(items); haptic(); renderList(); } }
+  }
+  function deleteSubtask(iid, sid) {
+    const items = getItems(), item = items.find(i => i.id === iid);
+    if (item?.subtasks) { item.subtasks = item.subtasks.filter(s => s.id !== sid); saveItems(items); haptic(); renderList(); }
+  }
+
+  // ═══════════════════════════════
+  //  SWIPE
+  // ═══════════════════════════════
+  function initSwipe(el, id) {
+    let sx, sy, cx, swiping = false, locked = false;
+    el.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; cx = 0; swiping = false; locked = false; }, { passive: true });
+    el.addEventListener('touchmove', (e) => {
+      if (locked) return;
+      const dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+      if (!swiping && Math.abs(dy) > Math.abs(dx)) { locked = true; return; }
+      if (Math.abs(dx) > 10) swiping = true;
+      if (!swiping) return;
+      cx = dx; el.style.transform = `translateX(${dx}px)`; el.style.transition = 'none';
+    }, { passive: true });
+    el.addEventListener('touchend', () => {
+      if (!swiping) return;
+      el.style.transition = 'transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.25s';
+      if (cx > 80) { el.classList.add('completing'); haptic('heavy'); setTimeout(() => toggleDone(id), 280); }
+      else if (cx < -80) { el.classList.add('removing'); haptic('heavy'); setTimeout(() => { saveItems(getItems().filter(i => i.id !== id)); renderList(); updateStats(); }, 280); }
+      else el.style.transform = 'translateX(0)';
+    });
+  }
+
+  // ═══════════════════════════════
+  //  EXPORT / IMPORT
+  // ═══════════════════════════════
+  $('exportToggle').addEventListener('click', () => { $('exportModal').classList.add('show'); haptic(); });
+  $('exportClose').addEventListener('click', () => $('exportModal').classList.remove('show'));
+  $('exportModal').addEventListener('click', (e) => { if (e.target === $('exportModal')) $('exportModal').classList.remove('show'); });
+
+  $('exportJSON').addEventListener('click', () => { dl('braindump-backup.json', JSON.stringify(getItems(), null, 2), 'application/json'); showToast('JSON exported'); $('exportModal').classList.remove('show'); });
+  $('exportText').addEventListener('click', () => {
+    const items = getItems(), groups = {};
+    items.forEach(i => { const d = new Date(i.time).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }); if (!groups[d]) groups[d] = []; groups[d].push(i); });
+    let t = 'BRAIN DUMP EXPORT\n==================\n\n';
+    Object.entries(groups).forEach(([day, di]) => {
+      t += `--- ${day} ---\n`;
+      di.forEach(i => { const time = new Date(i.time).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); t += `  ${time}  ${i.pinned?'[PIN] ':''}${i.done?'[DONE] ':''}${i.tag!=='thought'?`[${i.tag}] `:''}${i.text}\n`; if (i.subtasks?.length) i.subtasks.forEach(s => { t += `    ${s.done?'[x]':'[ ]'} ${s.text}\n`; }); });
+      t += '\n';
+    });
+    dl('braindump.txt', t, 'text/plain'); showToast('Text exported'); $('exportModal').classList.remove('show');
+  });
+  $('exportCSV').addEventListener('click', () => {
+    let c = 'Time,Tag,Text,Done,Pinned,Due\n';
+    getItems().forEach(i => { c += `"${i.time}","${i.tag}","${i.text.replace(/"/g,'""')}",${i.done},${i.pinned||false},"${i.due||''}"\n`; });
+    dl('braindump.csv', c, 'text/csv'); showToast('CSV exported'); $('exportModal').classList.remove('show');
+  });
+  $('importJSON').addEventListener('click', () => $('importFile').click());
+  $('importFile').addEventListener('change', (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = (ev) => { try { const imp = JSON.parse(ev.target.result); if (!Array.isArray(imp)) throw 0; const ex = getItems(), ids = new Set(ex.map(i=>i.id)), nw = imp.filter(i=>!ids.has(i.id)); saveItems([...nw,...ex]); renderList(); updateStats(); showToast(`Imported ${nw.length} items`); } catch { showToast('Invalid file'); } };
+    r.readAsText(f); $('exportModal').classList.remove('show'); e.target.value = '';
+  });
+
+  function dl(name, content, type) { const b = new Blob([content],{type}), u = URL.createObjectURL(b), a = document.createElement('a'); a.href = u; a.download = name; a.click(); URL.revokeObjectURL(u); }
+
+  // ═══════════════════════════════
+  //  HELPERS
+  // ═══════════════════════════════
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function formatDueShort(ds) {
+    const d = new Date(ds+'T12:00:00'), today = new Date(), tmrw = new Date(today);
+    today.setHours(0,0,0,0); tmrw.setDate(tmrw.getDate()+1); tmrw.setHours(0,0,0,0);
+    const t = new Date(d); t.setHours(0,0,0,0);
+    if (t.getTime()===today.getTime()) return 'Today';
+    if (t.getTime()===tmrw.getTime()) return 'Tomorrow';
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  }
+  function isOverdue(ds) { if (!ds) return false; const t = new Date(); t.setHours(0,0,0,0); const d = new Date(ds+'T12:00:00'); d.setHours(0,0,0,0); return d < t; }
+  function showToast(m) { toastEl.textContent = m; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 1500); }
+  function hl(html) {
+    if (!searchQuery) return html;
+    return html.replace(new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'), '<mark style="background:rgba(139,92,246,0.25);color:inherit;border-radius:3px;padding:0 2px">$1</mark>');
+  }
+
+  // ═══════════════════════════════
+  //  RENDER
+  // ═══════════════════════════════
+  function renderList() {
+    const items = getItems();
+    let filtered;
+    if (activeFilter === 'all') filtered = items.filter(i => !i.done);
+    else if (activeFilter === 'done') filtered = items.filter(i => i.done);
+    else filtered = items.filter(i => i.tag === activeFilter && !i.done);
+
+    if (searchQuery) filtered = filtered.filter(i => i.text.toLowerCase().includes(searchQuery) || i.tag.includes(searchQuery) || (i.subtasks||[]).some(s => s.text.toLowerCase().includes(searchQuery)));
+
+    filtered.sort((a, b) => { if (a.pinned && !b.pinned) return -1; if (!a.pinned && b.pinned) return 1; return 0; });
+
+    // Counts
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      const f = btn.dataset.filter;
+      let c; if (f==='all') c = items.filter(i=>!i.done).length; else if (f==='done') c = items.filter(i=>i.done).length; else c = items.filter(i=>i.tag===f&&!i.done).length;
+      const ex = btn.querySelector('.filter-count'); if (ex) ex.remove();
+      if (c > 0) { const s = document.createElement('span'); s.className = 'filter-count'; s.textContent = c; btn.appendChild(s); }
+    });
+
+    if (!filtered.length) {
+      listEl.innerHTML = `<div class="empty"><div class="empty-icon">${searchQuery ? '?' : activeFilter==='done' ? '~' : '+'}</div><div class="empty-title">${searchQuery ? 'No results' : activeFilter==='done' ? 'Nothing completed yet' : 'All clear'}</div><div class="empty-text">${searchQuery ? 'Try a different search' : activeFilter==='done' ? 'Complete items to see them here' : 'Dump a thought to get started'}</div></div>`;
+      return;
+    }
+
+    const groups = {};
+    filtered.forEach(item => { const k = new Date(item.time).toISOString().split('T')[0]; if (!groups[k]) groups[k] = []; groups[k].push(item); });
+    const today = new Date().toISOString().split('T')[0], yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
+
+    let html = '';
+    Object.entries(groups).forEach(([date, dayItems]) => {
+      let label; if (date===today) label='Today'; else if (date===yesterday) label='Yesterday'; else label = new Date(date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+      html += `<div class="day-group"><div class="day-label">${label}</div>`;
+
+      dayItems.forEach(item => {
+        const time = new Date(item.time).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+        const tagH = item.tag!=='thought' ? `<span class="item-tag-badge ${item.tag}">${item.tag}</span>` : '';
+        const pinH = item.pinned ? '<span class="item-pin-icon">&#9733;</span>' : '';
+        const isExp = expandedItems.has(item.id);
+        const overdue = !item.done && isOverdue(item.due);
+        const dueH = item.due ? `<span class="item-due"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>${formatDueShort(item.due)}</span>` : '';
+
+        const subs = item.subtasks || [], subsDone = subs.filter(s=>s.done).length;
+        let subsH = '';
+        if (subs.length > 0 || isExp) {
+          subsH += '<div class="subtasks">';
+          if (subs.length) { const pct = Math.round((subsDone/subs.length)*100); subsH += `<div class="subtask-progress"><div class="subtask-progress-fill" style="width:${pct}%"></div></div>`; }
+          subs.forEach(s => { subsH += `<div class="subtask ${s.done?'done':''}"><button class="subtask-check" onclick="event.stopPropagation();toggleSubtask('${item.id}','${s.id}')">&#10003;</button><span class="subtask-text">${esc(s.text)}</span><button class="subtask-delete" onclick="event.stopPropagation();deleteSubtask('${item.id}','${s.id}')">&times;</button></div>`; });
+          if (isExp) subsH += `<div class="add-subtask"><input class="add-subtask-input" placeholder="Add subtask..." onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.stopPropagation();addSubtask('${item.id}',this.value);this.value=''}"></div>`;
+          subsH += '</div>';
+        }
+
+        const actH = `<div class="item-actions ${isExp?'show':''}"><button class="item-action-btn" onclick="event.stopPropagation();openEdit('${item.id}')">Edit</button><button class="item-action-btn" onclick="event.stopPropagation();togglePin('${item.id}')">${item.pinned?'Unpin':'Pin'}</button><button class="item-action-btn" onclick="event.stopPropagation();var t=prompt('Subtask:');if(t)addSubtask('${item.id}',t)">+ Subtask</button><button class="item-action-btn danger" onclick="event.stopPropagation();deleteItem('${item.id}')">Delete</button></div>`;
+
+        html += `<div class="item-wrap" data-wrap="${item.id}"><div class="swipe-bg swipe-bg-left">Done</div><div class="swipe-bg swipe-bg-right">Delete</div><div class="item ${item.done?'done':''} ${item.pinned?'pinned':''} ${overdue?'overdue':''}" data-id="${item.id}" onclick="toggleExpand('${item.id}')"><button class="item-check" onclick="event.stopPropagation();toggleDone('${item.id}')">&#10003;</button><div class="item-body"><div class="item-top-row"><div class="item-text">${hl(esc(item.text))}</div>${pinH}</div><div class="item-meta"><span class="item-time">${time}</span>${tagH}${dueH}${subs.length?`<span class="item-time">${subsDone}/${subs.length}</span>`:''}</div>${subsH}${actH}</div></div></div>`;
+      });
+      html += '</div>';
+    });
+
+    listEl.innerHTML = html;
+    document.querySelectorAll('.item[data-id]').forEach(el => initSwipe(el, el.dataset.id));
+    if (statsBar.classList.contains('show')) updateStats();
+  }
+
+  // ═══════════════════════════════
+  //  INIT
+  // ═══════════════════════════════
+  renderList();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
 </body>
 </html>
